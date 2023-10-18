@@ -40,3 +40,49 @@ func (t *TransactionUseCase) Register(
 
 	return transaction, nil
 }
+
+func (t *TransactionUseCase) Confirm(transactionId string) (*model.Transaction, error) {
+	transaction, err := t.TransactionRepository.Find(transactionId)
+	if err != nil {
+		return nil, err
+	}
+
+	transaction.Status = model.TransactionConfirmed
+	err = t.TransactionRepository.Save(transaction)
+	if err != nil {
+		return nil, err
+	}
+
+	return transaction, nil
+}
+
+func (t *TransactionUseCase) Complete(transactionId string) (*model.Transaction, error) {
+	transaction, err := t.TransactionRepository.Find(transactionId)
+	if err != nil {
+		return nil, err
+	}
+
+	transaction.Status = model.TransactionCompleted
+	err = t.TransactionRepository.Save(transaction)
+	if err != nil {
+		return nil, err
+	}
+
+	return transaction, nil
+}
+
+func (t *TransactionUseCase) Error(transactionId string, reason string) (*model.Transaction, error) {
+	transaction, err := t.TransactionRepository.Find(transactionId)
+	if err != nil {
+		return nil, err
+	}
+
+	transaction.Status = model.TransactionError
+	transaction.CancelDescription = reason
+	err = t.TransactionRepository.Save(transaction)
+	if err != nil {
+		return nil, err
+	}
+
+	return transaction, nil
+}
