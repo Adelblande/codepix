@@ -11,14 +11,6 @@ type PixKeyRepositoryDb struct {
 	Db *gorm.DB
 }
 
-// type PixKeyRepositoryInterface interface {
-// 	Registerkey(pixKey *PixKey) (*PixKey, error)
-// 	FindKeyByKind(key string, kind string) (*PixKey, error)
-// 	AddBank(bank *Bank) error
-// 	AddAccount(account *Account) error
-// 	FindAccount(id string) (*Account, error)
-// }
-
 func (r *PixKeyRepositoryDb) AddBank(bank *model.Bank) error {
 	err := r.Db.Create(bank).Error
 	if err != nil {

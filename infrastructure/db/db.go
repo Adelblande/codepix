@@ -9,6 +9,7 @@ import (
 	"github.com/adelblande/codepix/domain/model"
 	"github.com/jinzhu/gorm"
 	"github.com/joho/godotenv"
+	_ "github.com/lib/pq"
 )
 
 func init() {
