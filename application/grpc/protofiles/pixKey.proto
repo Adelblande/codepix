@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+package github.com.adelblande.codepix;
+
 option go_package = "/pb";
 
 message PixKeyRegistration {
@@ -44,4 +46,5 @@ service PixService {
 // rodar esse comando para gerar os arquivos de conexão grpc
 // go install google.golang.org/grpc/cmd/protoc-gen-go@latest
 // go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
+// go install github.com/spf13/cobra-cli@latest
 // protoc --go_out=application/grpc --go-grpc_out=application/grpc application/grpc/protofiles/*.proto
