@@ -23,7 +23,7 @@ var kafkaCmd = &cobra.Command{
 		if err != nil {
 			panic(err)
 		}
-		kafka.Publish("Olá abestado", "test", producer, deliveryChan)
+		// kafka.Publish("Olá abestado", "test", producer, deliveryChan)
 		go kafka.DeliveryReport(deliveryChan)
 
 		kafkaProcessor := kafka.NewKafkaProcessor(database, producer, deliveryChan)
