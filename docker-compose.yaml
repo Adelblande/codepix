@@ -5,6 +5,9 @@ services:
     build: .
     volumes:
       - .:/go/src/
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    container_name: codepix-app
 
   db:
     image: postgres:9.4
@@ -17,11 +20,13 @@ services:
       - POSTGRES_DB=codepix
     ports:
       - "5432:5432"
+    container_name: codepix-app-db  
 
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
+    container_name: codepix-zookeeper  
 
   kafka:
     image: confluentinc/cp-kafka:latest
@@ -39,7 +44,8 @@ services:
       KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:9092,OUTSIDE://host.docker.internal:9094
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,OUTSIDE:PLAINTEXT
     extra_hosts:
-      - "host.docker.internal:172.17.0.1"
+      - "host.docker.internal:host-gateway"
+    container_name: codepix-kafka
 
   kafka-topics-generator:
     image: confluentinc/cp-kafka:latest
@@ -53,7 +59,8 @@ services:
       kafka-topics --create --topic=bank001 --if-not-exists --bootstrap-server=kafka:9092 &&
       kafka-topics --create --topic=bank002 --if-not-exists --bootstrap-server=kafka:9092"
     extra_hosts:
-      - "host.docker.internal:172.17.0.1"
+      - "host.docker.internal:host-gateway"
+    container_name: codepix-kafka-topics-generator
 
   control-center:
     image: confluentinc/cp-enterprise-control-center:6.0.1
@@ -66,6 +73,7 @@ services:
       CONTROL_CENTER_BOOTSTRAP_SERVERS: 'kafka:9092'
       CONTROL_CENTER_REPLICATION_FACTOR: 1
       PORT: 9021
+    container_name: codepix-control-center
 
   pgadmin:
     image: dpage/pgadmin4
@@ -77,3 +85,4 @@ services:
       - "9000:80"
     depends_on:
       - db
+    container_name: codepix-pgadmin
